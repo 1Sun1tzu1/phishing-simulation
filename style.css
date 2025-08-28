@@ -1,92 +1,202 @@
-:root{
-  --bg:#fff; --line:#e5e7eb; --text:#111827;
-  --muted:#6b7280; --brand:#00ff84; --brandText:#001b0f; --blue:#1a73e8;
-}
-*{box-sizing:border-box} html,body{margin:0} body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-img,svg{max-width:100%;height:auto}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>TOAD • Mail demo</title>
+  <link rel="icon" href="assets/toad-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
 
-/* App bar */
-.mbar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;padding:12px 14px}
-.mbrand{display:flex;align-items:center;gap:8px;font-weight:800}.logo{height:22px}
-.icon{appearance:none;border:1px solid var(--line);background:#f3f4f6;border-radius:10px;padding:6px 10px;font-weight:700}
+  <!-- Top app bar -->
+  <header class="bar">
+    <div class="brand">
+      <img src="assets/toad-logo.svg" alt="TOAD logo" class="logo"/>
+      <span class="brand-name">Mail</span>
+    </div>
+    <button id="helpBtn" class="ic" aria-label="How to use">?</button>
+  </header>
 
-/* Tabs */
-.tabs{position:sticky;top:52px;z-index:9;display:flex;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:#fff}
-.tab{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#f8fafc;font-weight:600}
-.tab.active{background:#e8f0fe;border-color:#c7dafc;color:var(--blue)}
+  <!-- Tabs like Gmail -->
+  <nav class="tabs" role="tablist" aria-label="Folders">
+    <button class="tab active" data-box="inbox" role="tab" aria-selected="true">Inbox</button>
+    <button class="tab" data-box="junk" role="tab" aria-selected="false">Junk</button>
+  </nav>
 
-/* List + message cards */
-.list{padding-bottom:80px}
-.box{display:none}.box.active{display:block}
-.msg{padding:14px;border-bottom:1px solid #eef2f7}
-.msg .sender{font-size:13px;color:#374151;display:flex;align-items:center;gap:6px}
-.msg .subject{font-size:15px;color:#111827;margin-top:2px}
-.msg .prev{font-size:13px;color:var(--muted);margin-top:4px}
-.msg .meta{font-size:12px;color:#9ca3af;margin-top:4px}
-.unread .sender,.unread .subject{font-weight:800}
-.chip{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-size:12px;font-weight:800}
-.chip.in{background:#dff5e3;color:#0b6e2b}.chip.ex{background:#e8f2ff;color:#185ea5}
+  <!-- Frame like Gmail content area -->
+  <main class="frame">
+    <!-- INBOX -->
+    <section id="box-inbox" class="box active" role="tabpanel" aria-label="Inbox">
+      <!-- Legit internal -->
+      <article class="row unread" data-tpl="hr" data-attack="0" tabindex="0">
+        <div class="avatar in">HR</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">HR Team</span>
+            <time class="time">09:14</time>
+          </div>
+          <h3 class="subj">Holiday schedule update</h3>
+          <p class="prev">Please review the 2025 holiday policy. No action required today.</p>
+        </div>
+      </article>
 
-/* Floating CTA */
-.fab{position:fixed;right:14px;bottom:16px;z-index:20;height:48px;padding:0 18px;border-radius:999px;
-  background:var(--brand);color:var(--brandText);border:1px solid var(--brand);text-decoration:none;font-weight:800;
-  display:inline-flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+      <!-- Microsoft billing phish -->
+      <article class="row unread" data-tpl="invoice" data-attack="1" tabindex="0">
+        <div class="avatar ex">MS</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">Microsoft 365 Billing</span>
+            <time class="time">08:02</time>
+          </div>
+          <h3 class="subj">Action required: Microsoft 365 subscription payment failed</h3>
+          <p class="prev">We couldn’t process your latest payment. Review to prevent service disruption.</p>
+        </div>
+      </article>
 
-/* Message sheet */
-.sheet{position:fixed;inset:0;background:#fff;display:none;flex-direction:column;z-index:30}
-.sheet.show{display:flex}
-.sheet__head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
-.sheet__title{font-weight:800;flex:1}
-.ip{font-size:12px;border:1px dashed #f0c36a;background:#fff3cd;color:#8a6d3b;padding:2px 6px;border-radius:6px}
-.sheet__body{padding:12px 14px}
+      <!-- OneDrive CV phish (kept in Inbox by design) -->
+      <article class="row unread" data-tpl="cv" data-attack="1" tabindex="0">
+        <div class="avatar ex">AM</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">Anna McLean via OneDrive</span>
+            <time class="time">Mon</time>
+          </div>
+          <h3 class="subj">Application – Senior Account Manager (CV attached)</h3>
+          <p class="prev">Sharing CV_Anna_McLean.docm for your review.</p>
+        </div>
+      </article>
 
-/* Impact collapsible */
-.impact{border-top:1px solid var(--line);padding:10px 14px}
-.impact summary{font-weight:800}
-.facts{list-style:none;margin:8px 0 10px;padding:0}
-.facts li{margin:4px 0}
-.ghost{appearance:none;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px}
-.note{font-size:12px;color:#6b7280;margin-top:6px}
+      <!-- TOAD promo (clearly branded, non-attack) -->
+      <article class="row promo" data-tpl="promo" data-attack="0" tabindex="0">
+        <div class="avatar toad">TD</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">The Art of D3fense</span>
+            <time class="time">Today</time>
+          </div>
+          <h3 class="subj">Book your phishing simulation now</h3>
+          <p class="prev">Run a safe, tailored campaign. Quick setup, real impact.</p>
+          <span class="chip">TOAD</span>
+        </div>
+      </article>
+    </section>
 
-/* Branded email cards */
-.card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
-.ms-head,.od-head,.toad-head{display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid var(--line)}
-.ms-head{background:#f6f8fb}.od-head{background:#f5f9ff}.toad-head{background:#0b0f12;color:#eaf7f3;border-bottom-color:#1f2933}
-.ms-head img,.od-head img{height:20px}.toad-head img{height:24px}
-.body{padding:12px}
-.ms-cta{display:inline-block;background:#106ebe;color:#fff;border-radius:6px;padding:10px 14px;text-decoration:none;font-weight:700}
-.od-cta{display:inline-block;background:#0078d4;color:#fff;border-radius:6px;padding:10px 14px;text-decoration:none;font-weight:700}
-.toad-pill{display:inline-block;border:1px solid #2a3a45;border-radius:999px;padding:3px 8px;margin:0 6px 8px 0;color:#9fdcc8;font-size:12px}
-.toad-primary{display:inline-block;background:#00ff84;color:#001b0f;border-radius:8px;padding:10px 14px;text-decoration:none;font-weight:800;border:1px solid #00ff84}
-.toad-outline{display:inline-block;border:1px solid #00ff84;color:#00ff84;border-radius:8px;padding:10px 14px;text-decoration:none;font-weight:800}
+    <!-- JUNK -->
+    <section id="box-junk" class="box" role="tabpanel" aria-label="Junk">
+      <article class="row" tabindex="0">
+        <div class="avatar ex">CR</div>
+        <div class="col">
+          <div class="top"><span class="from">Crypto Riches</span><time class="time">Yesterday</time></div>
+          <h3 class="subj">💰 Double your coins in 24h!</h3>
+          <p class="prev">Limited offer. No risk.</p>
+        </div>
+      </article>
+      <article class="row" tabindex="0">
+        <div class="avatar ex">LD</div>
+        <div class="col">
+          <div class="top"><span class="from">Lucky Draw</span><time class="time">Yesterday</time></div>
+          <h3 class="subj">🎁 You won a prize!</h3>
+          <p class="prev">Claim within 2 hours to avoid forfeit.</p>
+        </div>
+      </article>
+      <article class="row" tabindex="0">
+        <div class="avatar ex">MS</div>
+        <div class="col">
+          <div class="top"><span class="from">Microsoft 365</span><time class="time">Mon</time></div>
+          <h3 class="subj">Security update confirmation</h3>
+          <p class="prev">Your security defaults are enabled.</p>
+        </div>
+      </article>
+    </section>
+  </main>
 
-/* Bottom login sheet */
-.login{position:fixed;inset:0;display:none;z-index:40}
-.login.show{display:block}
-.login__panel{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
-.login__card{width:100%;max-width:600px;background:#fff;border-radius:14px 14px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.3);padding:16px 16px 24px}
-.login__bar{width:100%;display:flex;justify-content:center}
-.drag{width:40px;height:5px;background:#e5e7eb;border-radius:999px;margin:8px 0}
-.login__logo{width:110px;margin-bottom:8px}
-.login__title{font-size:22px;margin:4px 0 10px}
-.lbl{font-size:13px;margin:10px 0 4px;display:block}
-.in{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px}
-.row{margin-top:12px;display:flex;justify-content:space-between;align-items:center}
-.link{color:#106ebe;text-decoration:none}
-.primary{background:#0067b8;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:800}
-.cap{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.cap summary{font-weight:800}
-pre{white-space:pre-wrap;background:#f8fafc;border:1px dashed #e5e7eb;border-radius:8px;padding:8px;margin:8px 0 0}
-.notice{margin-top:12px;background:#fff3cd;border:1px solid #f0c36a;border-radius:10px;padding:10px}
+  <!-- Floating CTA -->
+  <a class="fab" href="mailto:contact@theartofd3fense.co.uk?subject=Phishing%20Simulation%20Request">Book</a>
 
-/* Modal (manual) */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:50}
-.modal.show{display:flex}
-.modal__panel{width:min(720px,92vw);max-height:90vh;overflow:auto;background:#0b0f12;color:#eaf7f3;border:1px solid #1f2933;border-radius:12px;padding:16px}
-.modal .close{position:absolute;right:16px;top:16px}
+  <!-- MESSAGE OVERLAY (centered card + side “impact” on wide screens) -->
+  <div id="overlay" class="overlay" aria-hidden="true">
+    <div class="sheet">
+      <div class="sheet-head">
+        <button id="closeOverlay" class="ic" aria-label="Back">‹</button>
+        <div class="title" id="sheetTitle">Message</div>
+      </div>
 
-@media (min-width: 900px){
-  .sheet__body{max-width:820px;margin:0 auto}
-  .login__card{max-width:520px}
-}
+      <div class="sheet-grid">
+        <!-- message content -->
+        <div id="sheetBody" class="sheet-body"><!-- injected --></div>
+
+        <!-- impact panel (only for attack messages) -->
+        <aside id="impactPanel" class="impact" hidden>
+          <h4>What this reveals on open</h4>
+          <ul class="facts">
+            <li><b>Public IP:</b> <span id="v_ip">…</span></li>
+            <li><b>Approx. location:</b> <span id="v_loc">…</span></li>
+            <li><b>Network/ISP:</b> <span id="v_isp">…</span></li>
+            <li><b>Device:</b> <span id="v_dev">…</span></li>
+            <li><b>Browser:</b> <span id="v_br">…</span></li>
+            <li><b>Timezone:</b> <span id="v_tz">…</span></li>
+            <li><b>Screen:</b> <span id="v_scr">…</span></li>
+          </ul>
+          <button id="loadPixel" class="btn ghost">Simulate “Load remote images”</button>
+          <div id="pixelResult" class="note">Simulated locally; no data sent.</div>
+          <img id="demoPixel" alt="" style="display:none;width:1px;height:1px;" />
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN-IN MODAL (small, centered) -->
+  <div id="login" class="modal" aria-hidden="true">
+    <div class="panel">
+      <button id="closeLogin" class="ic x" aria-label="Close">✕</button>
+      <img id="loginLogo" class="m-logo" alt="">
+      <h1 id="loginTitle" class="m-title">Sign in</h1>
+
+      <label class="lbl" for="lemail">Email</label>
+      <input id="lemail" class="in" type="email" inputmode="email" autocomplete="off" placeholder="you@company.co.uk" required>
+
+      <label class="lbl" for="lpass">Password</label>
+      <input id="lpass" class="in" type="password" autocomplete="off" placeholder="••••••••" required>
+
+      <div class="row">
+        <a href="#" class="link" onclick="return false;">Forgot password?</a>
+        <button id="loginBtn" class="btn primary">Sign in</button>
+      </div>
+
+      <details class="cap" open>
+        <summary>Captured keystrokes (simulation)</summary>
+        <pre id="captureBox">Start typing…</pre>
+      </details>
+
+      <details class="cap">
+        <summary>Other risks (simulated)</summary>
+        <button id="clipBtn" class="btn ghost">Simulate clipboard read</button>
+        <div id="clipResult" class="note"></div>
+      </details>
+
+      <div id="loginNotice" class="notice" hidden>
+        ⚠️ Simulation complete. In a real attack, your keystrokes could already be exfiltrated.
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW-TO modal -->
+  <div id="howto" class="modal" aria-hidden="true">
+    <div class="panel panel-dark">
+      <button id="closeHowto" class="ic x" aria-label="Close">✕</button>
+      <h2>How to use this demo</h2>
+      <ol class="how">
+        <li>Open the **Microsoft** or **OneDrive** email to see how realistic lures look.</li>
+        <li>The right-hand panel shows what **opens** reveal (IP, device, pixel) — only for those emails.</li>
+        <li>Tap **View invoice** / **Sign in** to open a **fake login** (simulation only) and see keystroke capture.</li>
+        <li>The **TOAD** email is our legit message — no tracking panel appears there.</li>
+      </ol>
+      <p class="note">No data is stored. All effects are local to your browser.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
