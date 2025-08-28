@@ -1,128 +1,157 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>Mail • TOAD</title>
-<link rel="icon" href="assets/toad-logo.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>TOAD • Mail demo</title>
+  <link rel="icon" href="assets/toad-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- Top app bar -->
-<header class="mbar" role="banner">
-  <div class="mbrand">
-    <img src="assets/toad-logo.svg" alt="TOAD" class="logo">
-    <span>Mail</span>
+  <!-- Top app bar -->
+  <header class="bar">
+    <div class="brand">
+      <img src="assets/toad-logo.svg" alt="TOAD logo" class="logo"/>
+      <span class="brand-name">Mail</span>
+    </div>
+    <button id="helpBtn" class="ic" aria-label="How to use">?</button>
+  </header>
+
+  <!-- Tabs like Gmail -->
+  <nav class="tabs" role="tablist" aria-label="Folders">
+    <button class="tab active" data-box="inbox" role="tab" aria-selected="true">Inbox</button>
+    <button class="tab" data-box="junk" role="tab" aria-selected="false">Junk</button>
+  </nav>
+
+  <!-- Frame like Gmail content area -->
+  <main class="frame">
+    <!-- INBOX -->
+    <section id="box-inbox" class="box active" role="tabpanel" aria-label="Inbox">
+      <!-- Legit internal -->
+      <article class="row unread" data-tpl="hr" data-attack="0" tabindex="0">
+        <div class="avatar in">HR</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">HR Team</span>
+            <time class="time">09:14</time>
+          </div>
+          <h3 class="subj">Holiday schedule update</h3>
+          <p class="prev">Please review the 2025 holiday policy. No action required today.</p>
+        </div>
+      </article>
+
+      <!-- Microsoft billing phish -->
+      <article class="row unread" data-tpl="invoice" data-attack="1" tabindex="0">
+        <div class="avatar ex">MS</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">Microsoft 365 Billing</span>
+            <time class="time">08:02</time>
+          </div>
+          <h3 class="subj">Action required: Microsoft 365 subscription payment failed</h3>
+          <p class="prev">We couldn’t process your latest payment. Review to prevent service disruption.</p>
+        </div>
+      </article>
+
+      <!-- OneDrive CV phish (kept in Inbox by design) -->
+      <article class="row unread" data-tpl="cv" data-attack="1" tabindex="0">
+        <div class="avatar ex">AM</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">Anna McLean via OneDrive</span>
+            <time class="time">Mon</time>
+          </div>
+          <h3 class="subj">Application – Senior Account Manager (CV attached)</h3>
+          <p class="prev">Sharing CV_Anna_McLean.docm for your review.</p>
+        </div>
+      </article>
+
+      <!-- TOAD promo (clearly branded, non-attack) -->
+      <article class="row promo" data-tpl="promo" data-attack="0" tabindex="0">
+        <div class="avatar toad">TD</div>
+        <div class="col">
+          <div class="top">
+            <span class="from">The Art of D3fense</span>
+            <time class="time">Today</time>
+          </div>
+          <h3 class="subj">Book your phishing simulation now</h3>
+          <p class="prev">Run a safe, tailored campaign. Quick setup, real impact.</p>
+          <span class="chip">TOAD</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- JUNK -->
+    <section id="box-junk" class="box" role="tabpanel" aria-label="Junk">
+      <article class="row" tabindex="0">
+        <div class="avatar ex">CR</div>
+        <div class="col">
+          <div class="top"><span class="from">Crypto Riches</span><time class="time">Yesterday</time></div>
+          <h3 class="subj">💰 Double your coins in 24h!</h3>
+          <p class="prev">Limited offer. No risk.</p>
+        </div>
+      </article>
+      <article class="row" tabindex="0">
+        <div class="avatar ex">LD</div>
+        <div class="col">
+          <div class="top"><span class="from">Lucky Draw</span><time class="time">Yesterday</time></div>
+          <h3 class="subj">🎁 You won a prize!</h3>
+          <p class="prev">Claim within 2 hours to avoid forfeit.</p>
+        </div>
+      </article>
+      <article class="row" tabindex="0">
+        <div class="avatar ex">MS</div>
+        <div class="col">
+          <div class="top"><span class="from">Microsoft 365</span><time class="time">Mon</time></div>
+          <h3 class="subj">Security update confirmation</h3>
+          <p class="prev">Your security defaults are enabled.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Floating CTA -->
+  <a class="fab" href="mailto:contact@theartofd3fense.co.uk?subject=Phishing%20Simulation%20Request">Book</a>
+
+  <!-- MESSAGE OVERLAY (centered card + side “impact” on wide screens) -->
+  <div id="overlay" class="overlay" aria-hidden="true">
+    <div class="sheet">
+      <div class="sheet-head">
+        <button id="closeOverlay" class="ic" aria-label="Back">‹</button>
+        <div class="title" id="sheetTitle">Message</div>
+      </div>
+
+      <div class="sheet-grid">
+        <!-- message content -->
+        <div id="sheetBody" class="sheet-body"><!-- injected --></div>
+
+        <!-- impact panel (only for attack messages) -->
+        <aside id="impactPanel" class="impact" hidden>
+          <h4>What this reveals on open</h4>
+          <ul class="facts">
+            <li><b>Public IP:</b> <span id="v_ip">…</span></li>
+            <li><b>Approx. location:</b> <span id="v_loc">…</span></li>
+            <li><b>Network/ISP:</b> <span id="v_isp">…</span></li>
+            <li><b>Device:</b> <span id="v_dev">…</span></li>
+            <li><b>Browser:</b> <span id="v_br">…</span></li>
+            <li><b>Timezone:</b> <span id="v_tz">…</span></li>
+            <li><b>Screen:</b> <span id="v_scr">…</span></li>
+          </ul>
+          <button id="loadPixel" class="btn ghost">Simulate “Load remote images”</button>
+          <div id="pixelResult" class="note">Simulated locally; no data sent.</div>
+          <img id="demoPixel" alt="" style="display:none;width:1px;height:1px;" />
+        </aside>
+      </div>
+    </div>
   </div>
-  <button id="openManual" class="icon" aria-label="What is this?">?</button>
-  <link rel="icon" href="assets/toad-favicon.svg" type="image/svg+xml">
-</header>
 
-<!-- Tabs -->
-<nav class="tabs" role="tablist" aria-label="Folders">
-  <button class="tab active" data-box="inbox" role="tab" aria-selected="true">Inbox</button>
-  <button class="tab" data-box="junk" role="tab" aria-selected="false">Junk</button>
-</nav>
-
-<!-- Lists -->
-<main class="list" role="main">
-  <!-- INBOX -->
-  <section id="box-inbox" class="box active" role="tabpanel" aria-label="Inbox">
-    <!-- Legit internal -->
-    <article class="msg unread" data-tpl="hr" tabindex="0">
-      <div class="sender"><span class="chip in">HR</span> HR Team</div>
-      <div class="subject">Holiday schedule update</div>
-      <div class="prev">Please review the 2025 holiday policy. No action required today.</div>
-      <div class="meta">09:14</div>
-    </article>
-
-    <!-- Microsoft billing phish -->
-    <article class="msg unread" data-tpl="invoice" tabindex="0">
-      <div class="sender"><span class="chip ex">MS</span> Microsoft 365 Billing</div>
-      <div class="subject">Action required: Microsoft 365 subscription payment failed</div>
-      <div class="prev">We couldn’t process your latest payment. Review to prevent service disruption.</div>
-      <div class="meta">08:02</div>
-    </article>
-
-    <!-- OneDrive CV phish (kept in Inbox on purpose) -->
-    <article class="msg unread" data-tpl="cv" tabindex="0">
-      <div class="sender"><span class="chip ex">AM</span> Anna McLean via OneDrive</div>
-      <div class="subject">Application – Senior Account Manager (CV attached)</div>
-      <div class="prev">Sharing CV_Anna_McLean.docm for your review.</div>
-      <div class="meta">Mon</div>
-    </article>
-
-    <!-- TOAD promo (CTA) -->
-    <article class="msg" data-tpl="promo" tabindex="0">
-      <div class="sender"><span class="chip in">TD</span> The Art of D3fense</div>
-      <div class="subject">Book your phishing simulation now</div>
-      <div class="prev">Run a safe, tailored campaign. Quick setup, real impact.</div>
-      <div class="meta">Today</div>
-    </article>
-  </section>
-
-  <!-- JUNK -->
-  <section id="box-junk" class="box" role="tabpanel" aria-label="Junk">
-    <article class="msg" tabindex="0">
-      <div class="sender"><span class="chip ex">CR</span> Crypto Riches</div>
-      <div class="subject">💰 Double your coins in 24h!</div>
-      <div class="prev">Limited offer. No risk.</div>
-      <div class="meta">Yesterday</div>
-    </article>
-    <article class="msg" tabindex="0">
-      <div class="sender"><span class="chip ex">LD</span> Lucky Draw</div>
-      <div class="subject">🎁 You won a prize!</div>
-      <div class="prev">Claim within 2 hours to avoid forfeit.</div>
-      <div class="meta">Yesterday</div>
-    </article>
-    <article class="msg" tabindex="0">
-      <div class="sender"><span class="chip ex">MS</span> Microsoft 365</div>
-      <div class="subject">Security update confirmation</div>
-      <div class="prev">Your security defaults are enabled.</div>
-      <div class="meta">Mon</div>
-    </article>
-  </section>
-</main>
-
-<!-- Floating CTA -->
-<a class="fab" href="mailto:contact@theartofd3fense.co.uk?subject=Phishing%20Simulation%20Request" aria-label="Book simulation">Book</a>
-
-<!-- MESSAGE SHEET -->
-<div id="sheet" class="sheet" aria-hidden="true" role="dialog" aria-label="Message">
-  <div class="sheet__head">
-    <button id="closeSheet" class="icon" aria-label="Back">‹</button>
-    <div class="sheet__title" id="sheetTitle">Message</div>
-    <span id="ipBadge" class="ip">IP: …</span>
-  </div>
-
-  <div class="sheet__body" id="sheetBody"><!-- injected --></div>
-
-  <!-- Impact collapsible -->
-  <details class="impact" open>
-    <summary>What you just revealed by opening this</summary>
-    <ul class="facts">
-      <li><strong>Public IP:</strong> <span id="v_ip">…</span></li>
-      <li><strong>Approx. location:</strong> <span id="v_loc">…</span></li>
-      <li><strong>Network/ISP:</strong> <span id="v_isp">…</span></li>
-      <li><strong>Device:</strong> <span id="v_dev">…</span></li>
-      <li><strong>Browser:</strong> <span id="v_br">…</span></li>
-      <li><strong>Timezone:</strong> <span id="v_tz">…</span></li>
-      <li><strong>Screen:</strong> <span id="v_scr">…</span></li>
-    </ul>
-    <button id="loadPixel" class="ghost">Simulate “Load remote images”</button>
-    <div id="pixelResult" class="note">This would ping the sender with your open time, IP, and user agent. (Simulated locally.)</div>
-    <img id="demoPixel" alt="" style="display:none;width:1px;height:1px;" />
-  </details>
-</div>
-
-<!-- SIGN-IN BOTTOM SHEET -->
-<div id="login" class="login" aria-hidden="true">
-  <div class="login__panel" role="dialog" aria-label="Sign in">
-    <div class="login__bar"><div class="drag"></div></div>
-    <div class="login__card">
-      <img id="loginLogo" class="login__logo" src="" alt="">
-      <h1 class="login__title" id="loginTitle">Sign in</h1>
+  <!-- SIGN-IN MODAL (small, centered) -->
+  <div id="login" class="modal" aria-hidden="true">
+    <div class="panel">
+      <button id="closeLogin" class="ic x" aria-label="Close">✕</button>
+      <img id="loginLogo" class="m-logo" alt="">
+      <h1 id="loginTitle" class="m-title">Sign in</h1>
 
       <label class="lbl" for="lemail">Email</label>
       <input id="lemail" class="in" type="email" inputmode="email" autocomplete="off" placeholder="you@company.co.uk" required>
@@ -132,10 +161,9 @@
 
       <div class="row">
         <a href="#" class="link" onclick="return false;">Forgot password?</a>
-        <button id="loginBtn" class="primary">Sign in</button>
+        <button id="loginBtn" class="btn primary">Sign in</button>
       </div>
 
-      <!-- Collapsible capture so the keyboard doesn’t hide it -->
       <details class="cap" open>
         <summary>Captured keystrokes (simulation)</summary>
         <pre id="captureBox">Start typing…</pre>
@@ -143,7 +171,7 @@
 
       <details class="cap">
         <summary>Other risks (simulated)</summary>
-        <button id="clipBtn" class="ghost">Simulate clipboard read</button>
+        <button id="clipBtn" class="btn ghost">Simulate clipboard read</button>
         <div id="clipResult" class="note"></div>
       </details>
 
@@ -152,24 +180,22 @@
       </div>
     </div>
   </div>
-</div>
 
-<!-- MINI MANUAL -->
-<div id="manual" class="modal" aria-hidden="true">
-  <div class="modal__panel" role="dialog" aria-label="About this demo">
-    <button id="closeManual" class="icon close" aria-label="Close">✕</button>
-    <h2>Phishing Demo — What you’re seeing</h2>
-    <p>This mobile-first simulation shows realistic lures and what opens/clicks reveal. It stores nothing; everything runs locally in your browser.</p>
-    <ul>
-      <li><strong>Microsoft billing</strong> — unpaid invoice → fake sign-in</li>
-      <li><strong>OneDrive CV</strong> — macro-enabled DOCM lure</li>
-      <li><strong>Impact</strong> — IP, location, device, tracking pixel demo</li>
-    </ul>
-    <p><em>Want a safe test for your staff?</em></p>
-    <p><a class="primary block" href="mailto:contact@theartofd3fense.co.uk?subject=Phishing%20Simulation%20Request">Email TOAD</a></p>
+  <!-- HOW-TO modal -->
+  <div id="howto" class="modal" aria-hidden="true">
+    <div class="panel panel-dark">
+      <button id="closeHowto" class="ic x" aria-label="Close">✕</button>
+      <h2>How to use this demo</h2>
+      <ol class="how">
+        <li>Open the **Microsoft** or **OneDrive** email to see how realistic lures look.</li>
+        <li>The right-hand panel shows what **opens** reveal (IP, device, pixel) — only for those emails.</li>
+        <li>Tap **View invoice** / **Sign in** to open a **fake login** (simulation only) and see keystroke capture.</li>
+        <li>The **TOAD** email is our legit message — no tracking panel appears there.</li>
+      </ol>
+      <p class="note">No data is stored. All effects are local to your browser.</p>
+    </div>
   </div>
-</div>
 
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
