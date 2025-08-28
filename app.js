@@ -58,7 +58,7 @@ function renderMessage(tpl){
     sheetBody.innerHTML = `
       <article class="card">
         <div class="head od">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Microsoft_Office_OneDrive_%282019%29.svg" alt="OneDrive" style="height:20px">
+          <img src="assets/onedrive-logo.svg" alt="OneDrive" style="height:20px">
          <strong>OneDrive</strong>
         </div>
         <div class="body">
