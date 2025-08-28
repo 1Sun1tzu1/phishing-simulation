@@ -163,7 +163,7 @@ document.getElementById('closeLogin').onclick = ()=> login.classList.remove('sho
 function openLogin(origin='microsoft'){
   login.classList.add('show');
   if(origin==='onedrive'){
-    loginLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/5/57/Microsoft_Office_OneDrive_%282019–present%29.svg';
+    loginLogo.src = 'src="assets/onedrive-logo.svg" alt="OneDrive" style="height:20px"';
     loginLogo.alt = 'OneDrive';
     loginBtn.textContent = 'Sign in to OneDrive';
   } else {
