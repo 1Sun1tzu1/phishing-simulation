@@ -1,4 +1,4 @@
-// Tabs
+/* ========== Tabs (Inbox/Junk) ========== */
 document.querySelectorAll('.tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -9,14 +9,41 @@ document.querySelectorAll('.tab').forEach(btn=>{
   });
 });
 
-// Elements
+/* ========== INTRO (first-time splash + swipe) ========== */
+const INTRO_KEY = 'toad_demo_intro_seen';
+const intro = document.getElementById('intro');
+const introStart = document.getElementById('introStart');
+const introSkip  = document.getElementById('introSkip');
+
+function hideIntro(persist=false){
+  if(persist) localStorage.setItem(INTRO_KEY,'1');
+  intro.classList.add('hide');
+  setTimeout(()=>{ intro.style.display='none'; }, 280);
+}
+if(localStorage.getItem(INTRO_KEY)==='1'){
+  intro.style.display='none';
+}else{
+  // Start button
+  introStart.addEventListener('click', ()=> hideIntro(false));
+  // "Don't show again"
+  introSkip.addEventListener('click', ()=> hideIntro(true));
+  // Swipe left to dismiss on mobile
+  let sx=0;
+  intro.addEventListener('touchstart', e=> sx = e.changedTouches[0].screenX, {passive:true});
+  intro.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].screenX - sx;
+    if(dx < -50) hideIntro(false);
+  }, {passive:true});
+}
+
+/* ========== Elements for message overlay ========== */
 const overlay = document.getElementById('overlay');
 const sheetTitle = document.getElementById('sheetTitle');
 const sheetBody  = document.getElementById('sheetBody');
 const impactPanel= document.getElementById('impactPanel');
 document.getElementById('closeOverlay').onclick = ()=> overlay.classList.remove('show');
 
-// Open message
+/* ========== Open a message ========== */
 document.querySelectorAll('.row').forEach(r=>{
   r.addEventListener('click', ()=> openMessage(r));
   r.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); openMessage(r); }});
@@ -27,20 +54,19 @@ function openMessage(row){
   const tpl = row.dataset.tpl;
   const attack = row.dataset.attack === '1';
   renderMessage(tpl);
-  // Only show/calc impact for attack messages (NOT the TOAD promo)
-  impactPanel.hidden = !attack;
+  impactPanel.hidden = !attack;    // only for phish
   overlay.classList.add('show');
   if (attack) fetchImpact();
 }
 
-// Render the brand-specific message content
+/* ========== Render content ========== */
 function renderMessage(tpl){
   if(tpl === 'invoice'){
     sheetTitle.textContent = 'Microsoft 365 Billing';
     sheetBody.innerHTML = `
       <article class="card">
         <div class="head ms">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" style="height:20px">
+          <img src="assets/ms-logo.svg" alt="Microsoft" style="height:20px">
           <strong>Microsoft account</strong>
         </div>
         <div class="body">
@@ -59,7 +85,7 @@ function renderMessage(tpl){
       <article class="card">
         <div class="head od">
           <img src="assets/onedrive-logo.svg" alt="OneDrive" style="height:20px">
-         <strong>OneDrive</strong>
+          <strong>OneDrive</strong>
         </div>
         <div class="body">
           <p><strong>Anna McLean</strong> shared a file with you:</p>
@@ -115,7 +141,7 @@ function renderMessage(tpl){
   }
 }
 
-/* ---------- Impact (only called for attack messages) ---------- */
+/* ========== Impact (only for phish) ========== */
 async function fetchImpact(){
   const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -149,7 +175,7 @@ async function fetchImpact(){
   }
 }
 
-/* ---------- Login modal ---------- */
+/* ========== Login modal ========== */
 const login = document.getElementById('login');
 const loginLogo = document.getElementById('loginLogo');
 const loginTitle= document.getElementById('loginTitle');
@@ -167,7 +193,7 @@ function openLogin(origin='microsoft'){
     loginLogo.alt = 'OneDrive';
     loginBtn.textContent = 'Sign in to OneDrive';
   } else {
-    loginLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg';
+    loginLogo.src = 'assets/ms-logo.svg';
     loginLogo.alt = 'Microsoft';
     loginBtn.textContent = 'Sign in';
   }
@@ -177,11 +203,13 @@ loginBtn.onclick = ()=>{ notice.hidden = false; };
 [lEmail,lPass].forEach(el=> el.addEventListener('input', ()=>{ capBox.textContent = `${lEmail.value}\n${lPass.value}`; }));
 document.getElementById('clipBtn').onclick = ()=>{ document.getElementById('clipResult').textContent = "Clipboard contents: 'Company_Invoice_2025.docx' (simulated)"; };
 
-/* ---------- How-to modal ---------- */
+/* ========== How-to modal ========== */
 const how = document.getElementById('howto');
 document.getElementById('helpBtn').onclick = ()=> how.classList.add('show');
 document.getElementById('closeHowto').onclick = ()=> how.classList.remove('show');
 how.addEventListener('click', e=>{ if(e.target===how) how.classList.remove('show'); });
 
 /* overlay dismiss on outside click */
-overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.classList.remove('show'); });
+const overlayEl = document.getElementById('overlay');
+overlayEl.addEventListener('click', e=>{ if(e.target===overlayEl) overlayEl.classList.remove('show'); });
+
