@@ -7,6 +7,19 @@
 body{background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 img,svg{max-width:100%;height:auto}
 
+/* INTRO */
+.intro{position:fixed;inset:0;background:#0b0f12;color:#eaf7f3;display:flex;align-items:center;justify-content:center;z-index:1000}
+.intro.hide{animation:introFade .28s ease forwards}
+@keyframes introFade{to{opacity:0;visibility:hidden}}
+.intro__card{width:min(560px,92vw);padding:20px;text-align:center}
+.intro__logo{width:84px;margin-bottom:10px}
+.intro__title{margin:6px 0 4px}
+.intro__lead{margin:0 0 8px;color:#9fb3bd}
+.intro__list{list-style:none;padding:0;margin:12px 0 14px;text-align:left}
+.intro__list li{margin:6px 0}
+.intro__start{background:var(--brand);color:var(--brandText);border:1px solid var(--brand)}
+.intro__skip{display:block;margin:10px auto 0}
+
 /* header */
 .bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);
      display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
@@ -37,7 +50,7 @@ img,svg{max-width:100%;height:auto}
 .time{font-size:12px;color:#9aa3ae}
 .subj{margin:4px 0 2px;font-size:16px}
 .prev{margin:0;color:#6b7280}
-.chip{display:inline-block;margin-top:6px;padding:2px 8px;border:1px solid #0ab15e;color:#0ab15e;border-radius:999px;font-size:12px}
+.chip{display:inline-block;margin-top:6px;padding:2px 8px;border:1px solid #00ff84;color:#00ff84;border-radius:999px;font-size:12px}
 
 /* CTA */
 .fab{position:fixed;right:16px;bottom:18px;z-index:20;height:48px;padding:0 18px;border-radius:999px;
@@ -51,9 +64,7 @@ img,svg{max-width:100%;height:auto}
 .sheet-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
 .title{font-weight:800;font-size:16px}
 .sheet-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:12px}
-@media (min-width: 900px){
-  .sheet-grid{grid-template-columns:1.25fr .85fr}
-}
+@media (min-width: 900px){ .sheet-grid{grid-template-columns:1.25fr .85fr} }
 
 /* message card styles */
 .card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
