@@ -9,6 +9,22 @@
 </head>
 <body>
 
+  <!-- INTRO (shown on first visit; can be dismissed by swipe left or Start) -->
+  <div id="intro" class="intro" role="dialog" aria-label="Welcome & how to use" aria-modal="true">
+    <div class="intro__card">
+      <img src="assets/toad-logo.svg" alt="TOAD" class="intro__logo"/>
+      <h1 class="intro__title">Phishing Demo</h1>
+      <p class="intro__lead">See what one wrong click can reveal — safely.</p>
+      <ul class="intro__list">
+        <li>📩 Explore the inbox (some emails are safe, some are phishing).</li>
+        <li>🔍 Opening a phish shows what attackers can learn (IP, device, pixel).</li>
+        <li>🔐 Tap “Sign in” to see a **simulated** keystroke capture (no data stored).</li>
+      </ul>
+      <button id="introStart" class="btn intro__start">👉 Swipe left or tap Start</button>
+      <button id="introSkip" class="link intro__skip" aria-label="Skip intro next time">Don’t show again</button>
+    </div>
+  </div>
+
   <!-- Top app bar -->
   <header class="bar">
     <div class="brand">
@@ -32,10 +48,7 @@
       <article class="row unread" data-tpl="hr" data-attack="0" tabindex="0">
         <div class="avatar in">HR</div>
         <div class="col">
-          <div class="top">
-            <span class="from">HR Team</span>
-            <time class="time">09:14</time>
-          </div>
+          <div class="top"><span class="from">HR Team</span><time class="time">09:14</time></div>
           <h3 class="subj">Holiday schedule update</h3>
           <p class="prev">Please review the 2025 holiday policy. No action required today.</p>
         </div>
@@ -45,10 +58,7 @@
       <article class="row unread" data-tpl="invoice" data-attack="1" tabindex="0">
         <div class="avatar ex">MS</div>
         <div class="col">
-          <div class="top">
-            <span class="from">Microsoft 365 Billing</span>
-            <time class="time">08:02</time>
-          </div>
+          <div class="top"><span class="from">Microsoft 365 Billing</span><time class="time">08:02</time></div>
           <h3 class="subj">Action required: Microsoft 365 subscription payment failed</h3>
           <p class="prev">We couldn’t process your latest payment. Review to prevent service disruption.</p>
         </div>
@@ -58,10 +68,7 @@
       <article class="row unread" data-tpl="cv" data-attack="1" tabindex="0">
         <div class="avatar ex">AM</div>
         <div class="col">
-          <div class="top">
-            <span class="from">Anna McLean via OneDrive</span>
-            <time class="time">Mon</time>
-          </div>
+          <div class="top"><span class="from">Anna McLean via OneDrive</span><time class="time">Mon</time></div>
           <h3 class="subj">Application – Senior Account Manager (CV attached)</h3>
           <p class="prev">Sharing CV_Anna_McLean.docm for your review.</p>
         </div>
@@ -71,10 +78,7 @@
       <article class="row promo" data-tpl="promo" data-attack="0" tabindex="0">
         <div class="avatar toad">TD</div>
         <div class="col">
-          <div class="top">
-            <span class="from">The Art of D3fense</span>
-            <time class="time">Today</time>
-          </div>
+          <div class="top"><span class="from">The Art of D3fense</span><time class="time">Today</time></div>
           <h3 class="subj">Book your phishing simulation now</h3>
           <p class="prev">Run a safe, tailored campaign. Quick setup, real impact.</p>
           <span class="chip">TOAD</span>
@@ -114,7 +118,7 @@
   <!-- Floating CTA -->
   <a class="fab" href="mailto:contact@theartofd3fense.co.uk?subject=Phishing%20Simulation%20Request">Book</a>
 
-  <!-- MESSAGE OVERLAY (centered card + side “impact” on wide screens) -->
+  <!-- MESSAGE OVERLAY -->
   <div id="overlay" class="overlay" aria-hidden="true">
     <div class="sheet">
       <div class="sheet-head">
@@ -124,7 +128,7 @@
 
       <div class="sheet-grid">
         <!-- message content -->
-        <div id="sheetBody" class="sheet-body"><!-- injected --></div>
+        <div id="sheetBody" class="sheet-body"></div>
 
         <!-- impact panel (only for attack messages) -->
         <aside id="impactPanel" class="impact" hidden>
@@ -146,7 +150,7 @@
     </div>
   </div>
 
-  <!-- SIGN-IN MODAL (small, centered) -->
+  <!-- SIGN-IN MODAL -->
   <div id="login" class="modal" aria-hidden="true">
     <div class="panel">
       <button id="closeLogin" class="ic x" aria-label="Close">✕</button>
@@ -187,12 +191,12 @@
       <button id="closeHowto" class="ic x" aria-label="Close">✕</button>
       <h2>How to use this demo</h2>
       <ol class="how">
-        <li>Open the **Microsoft** or **OneDrive** email to see how realistic lures look.</li>
-        <li>The right-hand panel shows what **opens** reveal (IP, device, pixel) — only for those emails.</li>
-        <li>Tap **View invoice** / **Sign in** to open a **fake login** (simulation only) and see keystroke capture.</li>
-        <li>The **TOAD** email is our legit message — no tracking panel appears there.</li>
+        <li>Open the **Microsoft** or **OneDrive** email to see realistic lures.</li>
+        <li>The right panel shows what **opens** reveal (IP, device, pixel) — only for phish.</li>
+        <li>Tap **View invoice / Sign in** to open a **fake login** (simulation only).</li>
+        <li>The **TOAD** email is legit — no tracking panel there.</li>
       </ol>
-      <p class="note">No data is stored. All effects are local to your browser.</p>
+      <p class="note">No data is stored. Everything runs locally in your browser.</p>
     </div>
   </div>
 
